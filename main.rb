@@ -1,9 +1,17 @@
 #!/usr/bin/env ruby
 require 'net/https'
+require 'inifile'
 require 'json'
 require 'uri'
 
-url = 'http://data.fixer.io/api/latest?access_key=' # Add your own API key.
+access_key = String.new
+
+if (File.file?('config.ini'))
+    config = IniFile.load('config.ini')
+    access_key = config['global']['access_key']
+end
+
+url = 'http://data.fixer.io/api/latest?access_key=' + access_key
 uri = URI(url)
 
 Net::HTTP.start(uri.host, uri.port,
